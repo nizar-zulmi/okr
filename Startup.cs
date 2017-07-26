@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using okr.Data;
 using okr.Models;
 using okr.Services;
+using okr.Models.Database;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+using okr.Respositories;
 
 namespace okr
 {
@@ -39,13 +41,19 @@ namespace okr
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //var connectionString =  Configuration["DbContextSettings:ConnectionString"];
+
+            var connectionString =  Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<DatabaseContext>(opts =>  opts.UseNpgsql(connectionString));
+
+            // Add framework services.
+            // services.AddDbContext<ApplicationDbContext>(options =>
+            //     options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<DatabaseContext>();
+
+			services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddMvc();
 
@@ -73,7 +81,7 @@ namespace okr
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            //app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -81,7 +89,7 @@ namespace okr
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=User}/{action=Index}/{id?}");
             });
         }
     }
