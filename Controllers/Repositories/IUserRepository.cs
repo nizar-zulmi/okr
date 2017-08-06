@@ -6,5 +6,6 @@ namespace okr.Respositories
 	public interface IUserRepository
 	{
 		IEnumerable<User> GetAllUsers();
-	}
+		void AddUser(User user);
+    }
 }

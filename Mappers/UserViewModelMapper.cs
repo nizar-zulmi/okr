@@ -11,7 +11,9 @@ namespace okr.Mappers
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email
+                Email = user.Email,
+                Id = user.Id,
+                Password = user.Password
             };
         }
     }

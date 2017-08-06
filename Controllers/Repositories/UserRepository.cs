@@ -36,5 +36,11 @@ namespace okr.Respositories
 		{
 			return _databaseContext.User.ToList();
 		}
+
+        public void AddUser(User user)
+        {
+            _databaseContext.Add(user);
+            _databaseContext.SaveChanges();
+        }
     }
 }

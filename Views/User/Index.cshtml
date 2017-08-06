@@ -3,12 +3,10 @@
     Layout = "~/Views/Shared/_Main.cshtml";
 } 
 
-@model okr.Models.ViewModel.UserViewModel
-<div>@Model.FirstName @Model.LastName</div>
-<div>@Model.Email</div>
-
+@model IEnumerable<okr.Models.Database.User>
 <div>
-    <h1>
-        Holla
-    </h1>
+    @foreach (var item in Model)
+    {
+        <li>@item.FirstName</li>
+    }
 </div>
